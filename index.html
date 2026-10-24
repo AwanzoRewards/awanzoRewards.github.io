@@ -7,7 +7,6 @@
 <title>AwanzoRewards — Earn Online</title>
 <meta name="description" content="AwanzoRewards rewards dashboard">
 <meta name="monetag" content="7466d58976746ea5d79de81e178a7d71">
-<!-- Existing Monetag ad scripts preserved from the previous site -->
 <script>(function(s){s.dataset.zone='12091401',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 <script src="https://5gvcc.com/act/files/tag.min.js?z=12091495" data-cfasync="false" async></script>
 <script>(function(s){s.dataset.zone='12093012',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
@@ -27,23 +26,33 @@
 <article class="tile"><div class="ico">🧩</div><h4>Offerwalls</h4><p>Complete eligible partner offers. Publisher URLs need to be configured.</p><button onclick="document.getElementById('offerwalls').scrollIntoView({behavior:'smooth'})">View offerwalls</button></article>
 <article class="tile"><div class="ico">📋</div><h4>Surveys</h4><p>Open ySense and follow provider eligibility rules.</p><button id="surveyBtn">Open ySense</button></article>
 <article class="tile"><div class="ico">👥</div><h4>Refer friends</h4><p>120 coins for 12 eligible referrals after qualification checks.</p><button id="refBtn">Show referral link</button></article></section>
-<section id="offerwalls"><div class="section-title"><h3>Offerwalls</h3><span class="muted" style="font-size:12px">Publisher URLs required</span></div><div class="card"><div class="links" id="offerList"></div><p class="muted" style="font-size:12px;margin-bottom:0">Replace each placeholder with the official URL from your own publisher dashboard.</p></div></section>
+<section id="offerwalls"><div class="section-title"><h3>Offerwalls</h3><span class="muted" style="font-size:12px">Live: CPX Research</span></div><div class="card"><div class="links" id="offerList"></div><p class="muted" style="font-size:12px;margin-bottom:0">CPX Research is live with App ID 37611. Other placeholders can be replaced later.</p></div></section>
 <section><div class="section-title"><h3>Daily streak rewards</h3><span class="pill">7-day cycle</span></div><div class="card"><div class="streak" id="streakDays"></div><p class="muted" style="font-size:12px">Rewards must be granted by a trusted backend to prevent tampering.</p></div></section>
 <section><div class="section-title"><h3>Wallet</h3><span class="pill">Withdraw from 3,500 coins</span></div><div class="two"><div class="card"><h3>Withdraw request</h3><p class="muted">Not sent until secure balance checks and payout processing are configured.</p><div class="formrow"><select id="withdrawMethod"><option>Easypaisa</option><option>JazzCash</option><option>Bank transfer</option><option>PayPal</option></select></div><div class="formrow"><input id="withdrawAccount" placeholder="Payout account details"></div><div class="formrow"><input id="withdrawAmount" type="number" min="3500" placeholder="Coins (min. 3500)"></div><button id="withdrawBtn">Request withdrawal</button><div class="status" id="withdrawStatus"></div></div><div class="card"><h3>Deposit</h3><p class="muted">Deposit is disabled until a payment provider and server-side payment verification are connected.</p><div class="formrow"><input id="depositAmount" type="number" min="1" placeholder="Deposit amount"></div><button class="secondary" id="depositBtn">Deposit setup required</button><div class="status" id="depositStatus"></div></div></div></section>
 <div class="footer">© <span id="year"></span> AwanzoRewards · Rewards subject to partner terms and verification.</div></main>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-// Replace placeholders with values from Firebase Console > Project settings > Your apps.
-// Never place Firebase service-account private keys or other server secrets in this public file.
 const firebaseConfig={apiKey:"AIzaSyB3NjUPaoJJnYJxa4FnuHRa5Q3bmaKxt1k",authDomain:"awanzorewards.firebaseapp.com",projectId:"awanzorewards",storageBucket:"awanzorewards.firebasestorage.app",messagingSenderId:"977563209224",appId:"1:977563209224:web:f946c5bc4d175a503a4bbd"};
-// Add each publisher's official tracking URL from its dashboard.
-const LINKS={monetag:"PASTE_YOUR_MONETAG_REWARDED_AD_OR_DIRECT_LINK",ySense:"https://www.ysense.com/",Timewall:"PASTE_TIMEWALL_PUBLISHER_URL",Torox:"PASTE_TOROX_PUBLISHER_URL",Gemiads:"PASTE_GEMIADS_PUBLISHER_URL",Lootably:"PASTE_LOOTABLY_PUBLISHER_URL",Bitcotasks:"PASTE_BITCOTASKS_PUBLISHER_URL",MMWall:"PASTE_MMWALL_PUBLISHER_URL",PrimeEarn:"PASTE_PRIME_EARN_PUBLISHER_URL",AyetStudios:"PASTE_AYET_STUDIOS_PUBLISHER_URL",Monlix:"PASTE_MONLIX_PUBLISHER_URL",AdToWall:"PASTE_ADTOWALL_PUBLISHER_URL",Tryads:"PASTE_TRYADS_PUBLISHER_URL","PixelPoint.tv":"PASTE_PIXELPOINT_PUBLISHER_URL"};
+const LINKS={monetag:"PASTE_YOUR_MONETAG_REWARDED_AD_OR_DIRECT_LINK",ySense:"https://www.ysense.com/",CPXResearch:"https://offers.cpx-research.com/index.php?app_id=37611&ext_user_id=",Timewall:"PASTE_TIMEWALL_PUBLISHER_URL",Torox:"PASTE_TOROX_PUBLISHER_URL",Gemiads:"PASTE_GEMIADS_PUBLISHER_URL",Lootably:"PASTE_LOOTABLY_PUBLISHER_URL",Bitcotasks:"PASTE_BITCOTASKS_PUBLISHER_URL",MMWall:"PASTE_MMWALL_PUBLISHER_URL",PrimeEarn:"PASTE_PRIME_EARN_PUBLISHER_URL",AyetStudios:"PASTE_AYET_STUDIOS_PUBLISHER_URL",Monlix:"PASTE_MONLIX_PUBLISHER_URL",AdToWall:"PASTE_ADTOWALL_PUBLISHER_URL",Tryads:"PASTE_TRYADS_PUBLISHER_URL","PixelPoint.tv":"PASTE_PIXELPOINT_PUBLISHER_URL"};
 const $=id=>document.getElementById(id);$("year").textContent=new Date().getFullYear();
 const rewards=[1,1.5,2,2.5,3,3.7,4];$("streakDays").innerHTML=rewards.map((n,i)=>'<div class="day '+(i===0?'active':'')+'"><b>DAY '+(i+1)+'</b><strong>'+n+' 🪙</strong></div>').join("");
-$("offerList").innerHTML=Object.entries(LINKS).filter(([n])=>n!=="monetag"&&n!=="ySense").map(([n,u])=>'<a href="'+u+'" target="_blank" rel="noopener noreferrer">'+n+' ↗</a>').join("");
+
+function renderOffers(uid){
+  const extId = uid || "GuestUser";
+  $("offerList").innerHTML=Object.entries(LINKS).filter(([n])=>n!=="monetag"&&n!=="ySense").map(([n,u])=>{
+    let url = u;
+    if(n==="CPXResearch") {
+      url = u + encodeURIComponent(extId);
+    }
+    const isLive = n==="CPXResearch" ? ' style="background:#10332f;border-color:#6ee7b7;color:#6ee7b7;font-weight:700"' : '';
+    return '<a href="'+url+'" target="_blank" rel="noopener noreferrer"'+isLive+'>'+n+' ↗</a>';
+  }).join("");
+}
+renderOffers();
+
 const placeholder=s=>!s||s.startsWith("PASTE_");let auth=null,user=null;
-if(!Object.values(firebaseConfig).some(placeholder)){try{auth=getAuth(initializeApp(firebaseConfig));onAuthStateChanged(auth,u=>{user=u;$("authState").textContent=u?u.email:"Not signed in";$("loginBtn").classList.toggle("hide",!!u);$("logoutBtn").classList.toggle("hide",!u);$("authForm").classList.toggle("hide",!!u);$("accountStatus").textContent=u?"Signed in. Secure reward backend is still required.":"Please create an account or sign in.";});}catch(e){$("accountStatus").textContent="Firebase error: "+e.message;}}
+if(!Object.values(firebaseConfig).some(placeholder)){try{auth=getAuth(initializeApp(firebaseConfig));onAuthStateChanged(auth,u=>{user=u;$("authState").textContent=u?u.email:"Not signed in";$("loginBtn").classList.toggle("hide",!!u);$("logoutBtn").classList.toggle("hide",!u);$("authForm").classList.toggle("hide",!!u);$("accountStatus").textContent=u?"Signed in. Secure reward backend is still required.":"Please create an account or sign in."; renderOffers(u?u.uid:null);});}catch(e){$("accountStatus").textContent="Firebase error: "+e.message;}}
 $("loginBtn").onclick=()=>{$("authForm").classList.toggle("hide");$("email").focus();};
 $("signupBtn").onclick=async()=>{try{if(!auth)throw Error("Fill Firebase configuration placeholders first.");await createUserWithEmailAndPassword(auth,$("email").value.trim(),$("password").value);$("accountStatus").textContent="Account created. Configure Firestore and secure backend next.";}catch(e){$("accountStatus").textContent=e.message;}};
 $("signinBtn").onclick=async()=>{try{if(!auth)throw Error("Fill Firebase configuration placeholders first.");await signInWithEmailAndPassword(auth,$("email").value.trim(),$("password").value); }catch(e){$("accountStatus").textContent=e.message;}};
